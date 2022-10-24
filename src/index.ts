@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { schedule } from "node-cron";
 import { redis, redisClient, rpcProvider, twitterClient } from "./config";
-import { fetchDaoDeployedEvents } from "./fetch/fetchManagerEvents";
+import { fetchDaoDeployedEvents } from "./fetch/fetchEvents";
 import { createMessageDaoDeployed } from "./twitter";
 
 const tick = async () => {
