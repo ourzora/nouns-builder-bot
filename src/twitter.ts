@@ -6,5 +6,5 @@ export const createMessageDaoDeployed = async (dao: DaoDeployed) => {
 };
 
 export const createMessageAuctionCreated = async (auction: AuctionCreated) => {
-  return `🛠 New Auction for https://nouns.build/dao/${dao.collectionAddress}/${dao.tokenId}`;
+  return `🛠 New Auction for https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
 };
