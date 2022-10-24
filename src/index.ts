@@ -23,12 +23,12 @@ const tick = async () => {
 
     const daos = await fetchDaoDeployedEvents(fromBlock, latestBlock);
     for (const i in daos) {
-        const message = await createMessageDaoDeployed(daos[i])
-        twitterClient.tweetsV2
-          .createTweet({
-            text: message,
-          })
-          .catch((err) => console.log(err));
+      const message = await createMessageDaoDeployed(daos[i]);
+      twitterClient.tweetsV2
+        .createTweet({
+          text: message,
+        })
+        .catch((err) => console.log(err));
     }
 
     redisClient.set("block", latestBlock + 1, redis.print);

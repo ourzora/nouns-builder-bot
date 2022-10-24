@@ -22,3 +22,5 @@ export const GET_ALL_NEW_DAOS = gql`
     }
   }
 `;
+
+
