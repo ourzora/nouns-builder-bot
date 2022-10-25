@@ -22,6 +22,7 @@ export const GET_ALL_PROPOSALS_CREATED = gql`
                 ... on NounsBuilderGovernorProposalCreatedEventProperties {
                   __typename
                   description
+                  proposalId
                 }
               }
             }

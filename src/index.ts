@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { schedule } from "node-cron";
 import { redis, redisClient, rpcProvider, twitterClient } from "./config";
-import { fetchDaoDeployedEvents } from "./fetch/fetchEvents";
-import { createMessageDaoDeployed } from "./twitter";
+import { fetchDaoDeployedEvents, fetchEvents } from "./fetch/fetchEvents";
+import { createMessageDaoDeployed, messages } from "./twitter";
 
 const tick = async () => {
   try {
@@ -21,9 +21,9 @@ const tick = async () => {
     console.log("latest block -> ", latestBlock);
     console.log("from block -> ", fromBlock);
 
-    const daos = await fetchDaoDeployedEvents(fromBlock, latestBlock);
-    for (const i in daos) {
-      const message = await createMessageDaoDeployed(daos[i]);
+    const events = await fetchEvents(fromBlock, latestBlock);
+    for (const i in events) {
+      const message = await messages(events[i]);
       twitterClient.tweetsV2
         .createTweet({
           text: message,

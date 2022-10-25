@@ -5,6 +5,7 @@ import { GET_ALL_AUCTIONS } from "../graphql/auctionsQueries";
 import { Auction } from "../interfaces/auctionInterfaces";
 import { GET_ALL_PROPOSALS_CREATED } from "../graphql/governorQueries";
 import { Proposal } from "../interfaces/governorInterfaces";
+import { DaoEvents } from "../types/types";
 
 export const getEvents = async (
   startBlock: number,
@@ -32,6 +33,22 @@ export const getEvents = async (
     console.log(error);
     return undefined;
   }
+};
+
+export const fetchEvents = async (
+  startBlock: number,
+  endBlock: number
+): Promise<DaoEvents[]> => {
+  const managerEvents = await fetchDaoDeployedEvents(startBlock, endBlock);
+  const auctionEvents = await fetchAuctionEvents(startBlock, endBlock);
+  const governorEvents = await fetchGovernorEvents(startBlock, endBlock);
+
+  const events: DaoEvents[] = [
+    ...managerEvents,
+    ...auctionEvents,
+    ...governorEvents,
+  ];
+  return events.sort((a, b) => a.blockNumber - b.blockNumber);
 };
 
 // get manager events
@@ -98,6 +115,7 @@ export const fetchGovernorEvents = async (
         blockNumber: governorEvents[i].transactionInfo.blockNumber,
         collectionAddress: governorEvents[i].collectionAddress,
         description: governorEvents[i].properties.properties.description,
+        proposalId: governorEvents[i].properties.properties.proposalId,
       });
     }
   }

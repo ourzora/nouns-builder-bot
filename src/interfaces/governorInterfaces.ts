@@ -3,4 +3,5 @@ export interface Proposal {
   blockNumber: number;
   collectionAddress: string;
   description: string;
+  proposalId: string;
 }
