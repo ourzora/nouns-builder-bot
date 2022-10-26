@@ -1,12 +1,8 @@
 import "dotenv/config";
 import { schedule } from "node-cron";
 import { redis, redisClient, rpcProvider, twitterClient } from "./config";
-import {
-  fetchAuctionEvents,
-  fetchDaoDeployedEvents,
-  fetchEvents,
-} from "./fetch/fetchEvents";
-import { createMessageDaoDeployed, messages } from "./twitter";
+import { fetchEvents } from "./fetch/fetchEvents";
+import { messages } from "./twitter";
 
 const tick = async () => {
   try {
