@@ -6,22 +6,22 @@ import { messages } from "./twitter";
 
 const tick = async () => {
   try {
-    const latestBlock = (await rpcProvider.getBlockNumber()) - 4;
-    var fromBlock = await redisClient.get("block");
+    const endBlock = (await rpcProvider.getBlockNumber()) - 4;
+    var startBlock = parseInt(await redisClient.get("block"));
 
-    if (fromBlock == null) {
-      redisClient.set("block", latestBlock + 1, redis.print);
-      fromBlock = latestBlock;
+    if (startBlock == null) {
+      redisClient.set("block", endBlock + 1, redis.print);
+      startBlock = endBlock;
     }
 
-    if (fromBlock > latestBlock) {
-      fromBlock = latestBlock;
+    if (startBlock > endBlock) {
+      startBlock = endBlock;
     }
 
-    console.log("latest block -> ", latestBlock);
-    console.log("from block -> ", fromBlock);
+    console.log("start block -> ", startBlock);
+    console.log("end block -> ", endBlock);
 
-    const events = await fetchEvents(fromBlock, latestBlock);
+    const events = await fetchEvents(startBlock, endBlock);
     for (const i in events) {
       const message = await messages(events[i]);
       twitterClient.tweetsV2
@@ -31,7 +31,7 @@ const tick = async () => {
         .catch((err) => console.log(err));
     }
 
-    redisClient.set("block", latestBlock + 1, redis.print);
+    redisClient.set("block", endBlock + 1, redis.print);
   } catch (error) {
     console.log(error);
   }
