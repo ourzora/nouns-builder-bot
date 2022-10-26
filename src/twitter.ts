@@ -16,13 +16,13 @@ export const messages = (event: DaoEvents) => {
 };
 
 export const createMessageDaoDeployed = async (dao: DaoDeployed) => {
-  return `🛠 New DAO created https://nouns.build/dao/${dao.collectionAddress}`;
+  return `🛠 New DAO created: ${dao.name} DAO ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
 };
 
 export const createMessageAuctionCreated = async (auction: Auction) => {
-  return `🛠 New Auction for https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
+  return `✨ New auction created for ${auction.name} DAO ($${auction.symbol}) token ${auction.tokenId} https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
 };
 
 export const createMessageProposalCreated = async (proposal: Proposal) => {
-  return `🛠 New Proposal created for https://nouns.build/dao/${proposal.collectionAddress}/${proposal.proposalId}`;
+  return `📬 New proposal created for ${proposal.name} DAO ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/${proposal.proposalId}`;
 };

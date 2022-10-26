@@ -4,4 +4,6 @@ export interface Proposal {
   collectionAddress: string;
   description: string;
   proposalId: string;
+  name: string;
+  symbol: string;
 }

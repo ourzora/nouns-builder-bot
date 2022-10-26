@@ -6,6 +6,7 @@ import { Auction } from "../interfaces/auctionInterfaces";
 import { GET_ALL_PROPOSALS_CREATED } from "../graphql/governorQueries";
 import { Proposal } from "../interfaces/governorInterfaces";
 import { DaoEvents } from "../types/types";
+import { GET_DAO_INFO } from "../graphql/daoQueries";
 
 export const getEvents = async (
   startBlock: number,
@@ -29,6 +30,32 @@ export const getEvents = async (
       }
     );
     return events.nouns.nounsEvents.nodes;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};
+
+export const getDaos = async (
+  collectionAddress: string,
+  query: string
+): Promise<any> => {
+  if (collectionAddress == null) {
+    return;
+  }
+
+  try {
+    const events = await request(
+      "https://api.zora.co/graphql?X-ENABLE-NOUNS=true",
+      query,
+      {
+        collectionAddress: collectionAddress,
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    return events.nouns.nounsDaos.nodes;
   } catch (error) {
     console.log(error);
     return undefined;
@@ -64,10 +91,16 @@ export const fetchDaoDeployedEvents = async (
   const daos: DaoDeployed[] = [];
 
   for (const i in daoDeployedEvents) {
+    const daoName = await getDaos(
+      daoDeployedEvents[i].collectionAddress,
+      GET_DAO_INFO
+    );
     daos.push({
       eventType: "DaoDeployed",
-      blockNumber: daoDeployedEvents[i].blockNumber,
+      blockNumber: daoDeployedEvents[i].transactionInfo.blockNumber,
       collectionAddress: daoDeployedEvents[i].collectionAddress,
+      name: daoName[0].name,
+      symbol: daoName[0].symbol,
     });
   }
 
@@ -84,11 +117,17 @@ export const fetchAuctionEvents = async (
 
   for (const i in auctionEvents) {
     if (auctionEvents[i].properties.properties.tokenId != null) {
+      const daoName = await getDaos(
+        auctionEvents[i].collectionAddress,
+        GET_DAO_INFO
+      );
       events.push({
         eventType: "AuctionCreated",
         blockNumber: auctionEvents[i].transactionInfo.blockNumber,
         collectionAddress: auctionEvents[i].collectionAddress,
         tokenId: auctionEvents[i].properties.properties.tokenId,
+        name: daoName[0].name,
+        symbol: daoName[0].symbol,
       });
     }
   }
@@ -110,12 +149,18 @@ export const fetchGovernorEvents = async (
 
   for (const i in governorEvents) {
     if (governorEvents[i].properties.properties.tokenId != null) {
+      const daoName = await getDaos(
+        governorEvents[i].collectionAddress,
+        GET_DAO_INFO
+      );
       events.push({
         eventType: "ProposalCreated",
         blockNumber: governorEvents[i].transactionInfo.blockNumber,
         collectionAddress: governorEvents[i].collectionAddress,
         description: governorEvents[i].properties.properties.description,
         proposalId: governorEvents[i].properties.properties.proposalId,
+        name: daoName[0].name,
+        symbol: daoName[0].symbol,
       });
     }
   }

@@ -9,7 +9,7 @@ export const GET_ALL_NEW_DAOS = gql`
           nounsEventTypes: NOUNS_BUILDER_MANAGER_EVENT
           timeFilter: { endBlock: $endBlock, startBlock: $startBlock }
         }
-        networks: { network: ETHEREUM, chain: GOERLI }
+        networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: ASC }
       ) {
         nodes {

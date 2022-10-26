@@ -7,8 +7,9 @@ export const GET_ALL_AUCTIONS = gql`
         filter: {
           nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT
           timeFilter: { endBlock: $endBlock, startBlock: $startBlock }
+          nounsBuilderAuctionEventType: NOUNS_BUILDER_AUCTION_AUCTION_CREATED_EVENT
         }
-        networks: { network: ETHEREUM, chain: GOERLI }
+        networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: DESC }
       ) {
         nodes {

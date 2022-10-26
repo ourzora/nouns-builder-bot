@@ -3,4 +3,6 @@ export interface Auction {
   blockNumber: number;
   collectionAddress: string;
   tokenId: number;
+  name: string;
+  symbol: string;
 }
