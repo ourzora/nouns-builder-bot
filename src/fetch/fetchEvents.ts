@@ -49,7 +49,7 @@ export const getDaos = async (
       "https://api.zora.co/graphql?X-ENABLE-NOUNS=true",
       query,
       {
-        collectionAddress: collectionAddress,
+        collectionAddresses: collectionAddress,
       },
       {
         "Content-Type": "application/json",
