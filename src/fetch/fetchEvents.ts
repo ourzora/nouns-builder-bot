@@ -71,7 +71,6 @@ export const fetchEvents = async (
   const auctionBidEvents = await fetchAuctionBidEvents(startBlock, endBlock);
   const governorEvents = await fetchGovernorEvents(startBlock, endBlock);
 
-  console.log(auctionBidEvents);
   const events: DaoEvents[] = [
     ...managerEvents,
     ...auctionCreatedEvents,
