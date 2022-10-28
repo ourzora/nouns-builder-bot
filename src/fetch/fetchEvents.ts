@@ -1,8 +1,8 @@
 import request from "graphql-request";
 import { GET_ALL_NEW_DAOS } from "../graphql/managerQueries";
 import { DaoDeployed } from "../interfaces/managerInterfaces";
-import { GET_ALL_AUCTIONS } from "../graphql/auctionsQueries";
-import { Auction } from "../interfaces/auctionInterfaces";
+import { GET_ALL_AUCTIONS, GET_ALL_BIDS } from "../graphql/auctionsQueries";
+import { AuctionBid, AuctionCreated } from "../interfaces/auctionInterfaces";
 import { GET_ALL_PROPOSALS_CREATED } from "../graphql/governorQueries";
 import { Proposal } from "../interfaces/governorInterfaces";
 import { DaoEvents } from "../types/types";
@@ -67,12 +67,15 @@ export const fetchEvents = async (
   endBlock: number
 ): Promise<DaoEvents[]> => {
   const managerEvents = await fetchDaoDeployedEvents(startBlock, endBlock);
-  const auctionEvents = await fetchAuctionEvents(startBlock, endBlock);
+  const auctionCreatedEvents = await fetchAuctionCreatedEvents(startBlock, endBlock);
+  const auctionBidEvents = await fetchAuctionBidEvents(startBlock, endBlock);
   const governorEvents = await fetchGovernorEvents(startBlock, endBlock);
 
+  console.log(auctionBidEvents);
   const events: DaoEvents[] = [
     ...managerEvents,
-    ...auctionEvents,
+    ...auctionCreatedEvents,
+    ...auctionBidEvents,
     ...governorEvents,
   ];
   return events.sort((a, b) => a.blockNumber - b.blockNumber);
@@ -107,13 +110,13 @@ export const fetchDaoDeployedEvents = async (
   return daos;
 };
 
-// get auction events
-export const fetchAuctionEvents = async (
+// get auction created events
+export const fetchAuctionCreatedEvents = async (
   startBlock: number,
   endBlock: number
-): Promise<Auction[]> => {
+): Promise<AuctionCreated[]> => {
   const auctionEvents = await getEvents(startBlock, endBlock, GET_ALL_AUCTIONS);
-  const events: Auction[] = [];
+  const events: AuctionCreated[] = [];
 
   for (const i in auctionEvents) {
     if (auctionEvents[i].properties.properties.tokenId != null) {
@@ -128,6 +131,40 @@ export const fetchAuctionEvents = async (
         tokenId: auctionEvents[i].properties.properties.tokenId,
         name: daoName[0].name,
         symbol: daoName[0].symbol,
+      });
+    }
+  }
+
+  return events;
+};
+
+// get auction bid events
+export const fetchAuctionBidEvents = async (
+  startBlock: number,
+  endBlock: number
+): Promise<AuctionBid[]> => {
+  const auctionEvents = await getEvents(startBlock, endBlock, GET_ALL_BIDS);
+  const events: AuctionBid[] = [];
+
+  for (const i in auctionEvents) {
+    if (auctionEvents[i].properties.properties.tokenId != null) {
+      const daoName = await getDaos(
+        auctionEvents[i].collectionAddress,
+        GET_DAO_INFO
+      );
+
+      events.push({
+        eventType: "AuctionBid",
+        blockNumber: auctionEvents[i].transactionInfo.blockNumber,
+        collectionAddress: auctionEvents[i].collectionAddress,
+        tokenId: auctionEvents[i].properties.properties.tokenId,
+        name: daoName[0].name,
+        symbol: daoName[0].symbol,
+        amountPrice:
+          auctionEvents[i].properties.properties.amountPrice.chainTokenPrice
+            .decimal,
+        bidder: auctionEvents[i].properties.properties.bidder,
+        auctionTweetId: "",
       });
     }
   }
