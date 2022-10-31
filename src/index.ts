@@ -6,7 +6,7 @@ import { messages } from "./twitter";
 
 const tick = async () => {
   try {
-    const endBlock = (await rpcProvider.getBlockNumber()) - 4;
+    const endBlock = (await rpcProvider.getBlockNumber()) - 6;
     var startBlock = parseInt(await redisClient.get("block"));
 
     if (startBlock == null) {
