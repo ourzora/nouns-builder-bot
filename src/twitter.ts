@@ -27,7 +27,7 @@ export const createMessageAuctionCreated = async (auction: AuctionCreated) => {
 };
 
 export const createMessageProposalCreated = async (proposal: Proposal) => {
-  return `📬 New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/${proposal.proposalId}`;
+  return `📬 New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/vote/${proposal.proposalId}`;
 };
 
 export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
