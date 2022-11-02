@@ -184,21 +184,19 @@ export const fetchGovernorEvents = async (
   const events: Proposal[] = [];
 
   for (const i in governorEvents) {
-    if (governorEvents[i].properties.properties.tokenId != null) {
-      const daoName = await getDaos(
-        governorEvents[i].collectionAddress,
-        GET_DAO_INFO
-      );
-      events.push({
-        eventType: "ProposalCreated",
-        blockNumber: governorEvents[i].transactionInfo.blockNumber,
-        collectionAddress: governorEvents[i].collectionAddress,
-        description: governorEvents[i].properties.properties.description,
-        proposalId: governorEvents[i].properties.properties.proposalId,
-        name: daoName[0].name,
-        symbol: daoName[0].symbol,
-      });
-    }
+    const daoName = await getDaos(
+    governorEvents[i].collectionAddress,
+    GET_DAO_INFO
+    );
+    events.push({
+    eventType: "ProposalCreated",
+    blockNumber: governorEvents[i].transactionInfo.blockNumber,
+    collectionAddress: governorEvents[i].collectionAddress,
+    description: governorEvents[i].properties.properties.description,
+    proposalId: governorEvents[i].properties.properties.proposalId,
+    name: daoName[0].name,
+    symbol: daoName[0].symbol,
+    });
   }
 
   return events;
