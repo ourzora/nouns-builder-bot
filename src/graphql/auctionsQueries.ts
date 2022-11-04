@@ -16,6 +16,7 @@ export const GET_ALL_AUCTIONS = gql`
           collectionAddress
           transactionInfo {
             blockNumber
+            logIndex
           }
           properties {
             ... on NounsBuilderAuctionEvent {
@@ -67,6 +68,49 @@ export const GET_ALL_BIDS = gql`
                       decimal
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_AUCTION_SETTLED_EVENTS = gql`
+  query GetAllAuctionSettledEvents($endBlock: Int, $startBlock: Int) {
+    nouns {
+      nounsEvents(
+        filter: {
+          nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT
+          timeFilter: { endBlock: $endBlock, startBlock: $startBlock }
+          nounsBuilderAuctionEventType: NOUNS_BUILDER_AUCTION_AUCTION_SETTLED_EVENT
+        }
+        networks: { network: ETHEREUM, chain: MAINNET }
+        sort: { sortKey: CREATED, sortDirection: DESC }
+      ) {
+        nodes {
+          collectionAddress
+          transactionInfo {
+            blockNumber
+            logIndex
+          }
+          properties {
+            ... on NounsBuilderAuctionEvent {
+              __typename
+              nounsBuilderAuctionEventType
+              properties {
+                ... on NounsBuilderAuctionAuctionSettledEventProperties {
+                  __typename
+                  amountPrice {
+                    chainTokenPrice {
+                      decimal
+                    }
+                  }
+                  tokenId
+                  winner
                 }
               }
             }

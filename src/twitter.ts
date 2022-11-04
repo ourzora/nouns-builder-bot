@@ -1,16 +1,21 @@
 import { rpcProvider } from "./config";
-import { AuctionBid, AuctionCreated } from "./interfaces/auctionInterfaces";
+import {
+  AuctionBid,
+  AuctionCreated,
+  AuctionSettled,
+} from "./interfaces/auctionInterfaces";
 import { Proposal } from "./interfaces/governorInterfaces";
 import { DaoDeployed } from "./interfaces/managerInterfaces";
 import { DaoEvents } from "./types/types";
-
 
 export const messages = (event: DaoEvents) => {
   switch (event.eventType) {
     case "AuctionCreated":
       return createMessageAuctionCreated(event);
     case "AuctionBid":
-        return createMessageAuctionBid(event);
+      return createMessageAuctionBid(event);
+    case "AuctionSettled":
+      return createMessageAuctionSettled(event);
     case "ProposalCreated":
       return createMessageProposalCreated(event);
     case "DaoDeployed":
@@ -30,6 +35,16 @@ export const createMessageProposalCreated = async (proposal: Proposal) => {
   return `📬 New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/${proposal.proposalId}`;
 };
 
+export const createMessageAuctionSettled = async (auction: AuctionSettled) => {
+  return `💖 Auction for ${auction.name} ($${auction.symbol}) token ${
+    auction.tokenId
+  } won by ${await checkIfEnsExists(auction.winner)} for ${
+    auction.amountPrice
+  } ETH https://nouns.build/dao/${auction.collectionAddress}/${
+    auction.tokenId
+  }`;
+};
+
 export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
   return `💸 New bid of ${auctionBid.amountPrice} ETH placed for ${
     auctionBid.name
@@ -38,8 +53,7 @@ export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
   } by ${await checkIfEnsExists(auctionBid.bidder)} https://nouns.build/dao/${
     auctionBid.collectionAddress
   }/${auctionBid.tokenId}`;
-}
-
+};
 
 const checkIfEnsExists = async (address: string) => {
   try {
