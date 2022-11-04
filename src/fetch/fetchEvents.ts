@@ -7,7 +7,11 @@ import {
   GET_ALL_BIDS,
   GET_AUCTION_SETTLED_EVENTS,
 } from "../graphql/auctionsQueries";
-import { AuctionBid, AuctionCreated, AuctionSettled } from "../interfaces/auctionInterfaces";
+import {
+  AuctionBid,
+  AuctionCreated,
+  AuctionSettled,
+} from "../interfaces/auctionInterfaces";
 import { GET_ALL_PROPOSALS_CREATED } from "../graphql/governorQueries";
 import { Proposal } from "../interfaces/governorInterfaces";
 import { DaoEvents } from "../types/types";
