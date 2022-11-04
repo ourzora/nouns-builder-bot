@@ -45,6 +45,16 @@ export const createMessageAuctionSettled = async (auction: AuctionSettled) => {
   }`;
 };
 
+export const createMessageAuctionSettled = async (auction: AuctionSettled) => {
+  return `💖 Auction for ${auction.name} ($${auction.symbol}) token ${
+    auction.tokenId
+  } won by ${await checkIfEnsExists(auction.winner)} for ${
+    auction.amountPrice
+  } ETH https://nouns.build/dao/${auction.collectionAddress}/${
+    auction.tokenId
+  }`;
+};
+
 export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
   return `💸 New bid of ${auctionBid.amountPrice} ETH placed for ${
     auctionBid.name
