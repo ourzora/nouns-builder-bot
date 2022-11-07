@@ -1,7 +1,11 @@
 import { gql } from "graphql-request";
 
-export const GET_ALL_AUCTIONS = gql`
-  query GetAllAuctions($endBlock: Int, $startBlock: Int) {
+export const GET_ALL_AUCTIONS_CREATED = gql`
+  query GetAllAuctionsCreated(
+    $endBlock: Int
+    $startBlock: Int
+    $collectionAddresses: [String!]
+  ) {
     nouns {
       nounsEvents(
         filter: {
@@ -11,6 +15,7 @@ export const GET_ALL_AUCTIONS = gql`
         }
         networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: DESC }
+        where: { collectionAddresses: $collectionAddresses }
       ) {
         nodes {
           collectionAddress
@@ -37,7 +42,11 @@ export const GET_ALL_AUCTIONS = gql`
 
 
 export const GET_ALL_BIDS = gql`
-  query GetAllBids($endBlock: Int, $startBlock: Int) {
+  query GetAllBids(
+    $endBlock: Int
+    $startBlock: Int
+    $collectionAddresses: [String!]
+  ) {
     nouns {
       nounsEvents(
         filter: {
@@ -47,6 +56,7 @@ export const GET_ALL_BIDS = gql`
         }
         networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: DESC }
+        where: { collectionAddresses: $collectionAddresses }
       ) {
         nodes {
           collectionAddress
