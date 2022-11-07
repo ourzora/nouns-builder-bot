@@ -23,7 +23,7 @@ export const getEvents = async (
 
   try {
     const events = await request(
-      "https://api.zora.co/graphql?X-ENABLE-NOUNS=true",
+      "https://api.zora.co/graphql",
       query,
       {
         endBlock: endBlock,
@@ -54,7 +54,7 @@ export const getDaos = async (
 
   try {
     const events = await request(
-      "https://api.zora.co/graphql?X-ENABLE-NOUNS=true",
+      "https://api.zora.co/graphql",
       query,
       {
         collectionAddresses: collectionAddress,
