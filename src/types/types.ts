@@ -1,5 +1,14 @@
-import { AuctionBid, AuctionCreated } from "../interfaces/auctionInterfaces";
+import {
+  AuctionBid,
+  AuctionCreated,
+  AuctionSettled,
+} from "../interfaces/auctionInterfaces";
 import { Proposal } from "../interfaces/governorInterfaces";
 import { DaoDeployed } from "../interfaces/managerInterfaces";
 
-export type DaoEvents = AuctionCreated | Proposal | DaoDeployed | AuctionBid;
+export type DaoEvents =
+  | AuctionCreated
+  | Proposal
+  | DaoDeployed
+  | AuctionBid
+  | AuctionSettled;

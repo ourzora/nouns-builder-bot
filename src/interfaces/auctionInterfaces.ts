@@ -1,5 +1,6 @@
 export interface AuctionCreated {
   eventType: "AuctionCreated";
+  logIndex: number;
   blockNumber: number;
   collectionAddress: string;
   tokenId: number;
@@ -16,6 +17,17 @@ export interface AuctionBid {
   symbol: string;
   amountPrice: number;
   bidder: string;
-  auctionTweetId: string;
+}
+
+export interface AuctionSettled {
+  eventType: "AuctionSettled";
+  blockNumber: number;
+  logIndex: number;
+  collectionAddress: string;
+  tokenId: number;
+  name: string;
+  symbol: string;
+  amountPrice: number;
+  winner: string;
 }
 
