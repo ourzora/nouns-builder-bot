@@ -30,7 +30,7 @@ These are the .env variables you will need:
 
 There are many different services that you can use to deploy but we will focus on Railway. 
 
-1. Head to railway.app
+1. Head to https://railway.app/
 2. Go to your dashboard and click the `New Project` button
 3. Select `Deploy From Repo` (make sure you have put your bot on github! private repos are okay too)
 4. Select the repo with your bot
