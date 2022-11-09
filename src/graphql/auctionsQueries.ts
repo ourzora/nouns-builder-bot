@@ -41,7 +41,6 @@ export const GET_ALL_AUCTIONS_CREATED = gql`
   }
 `;
 
-
 export const GET_ALL_BIDS = gql`
   query GetAllBids(
     $endBlock: Int
@@ -88,9 +87,12 @@ export const GET_ALL_BIDS = gql`
   }
 `;
 
-
 export const GET_AUCTION_SETTLED_EVENTS = gql`
-  query GetAllAuctionSettledEvents($endBlock: Int, $startBlock: Int) {
+  query GetAllAuctionSettledEvents(
+    $endBlock: Int
+    $startBlock: Int
+    $collectionAddresses: [String!]
+  ) {
     nouns {
       nounsEvents(
         filter: {
@@ -100,6 +102,7 @@ export const GET_AUCTION_SETTLED_EVENTS = gql`
         }
         networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: DESC }
+        where: { collectionAddresses: $collectionAddresses }
       ) {
         nodes {
           collectionAddress
