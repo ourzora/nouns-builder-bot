@@ -1,8 +1,9 @@
+import "dotenv/config";
 import request from "graphql-request";
 import { GET_ALL_NEW_DAOS } from "../graphql/managerQueries";
 import { DaoDeployed } from "../interfaces/managerInterfaces";
 import {
-  GET_ALL_AUCTIONS,
+  GET_ALL_AUCTIONS_CREATED,
   GET_ALL_BIDS,
   GET_AUCTION_SETTLED_EVENTS,
 } from "../graphql/auctionsQueries";
@@ -32,6 +33,10 @@ export const getEvents = async (
       {
         endBlock: endBlock,
         startBlock: startBlock,
+        collectionAddresses:
+          process.env.DAO_TOKEN_ADDRESS !== ""
+            ? [process.env.DAO_TOKEN_ADDRESS]
+            : [],
       },
       {
         "Content-Type": "application/json",
@@ -87,8 +92,8 @@ export const fetchEvents = async (
   );
 
   const sortedAuctionEndedEvents = [
-    ...auctionCreatedEvents,
     ...auctionSettledEvents,
+    ...auctionCreatedEvents,
   ].sort((a, b) => a.logIndex - b.logIndex);
 
   const events: DaoEvents[] = [
@@ -134,7 +139,11 @@ export const fetchAuctionCreatedEvents = async (
   startBlock: number,
   endBlock: number
 ): Promise<AuctionCreated[]> => {
-  const auctionEvents = await getEvents(startBlock, endBlock, GET_ALL_AUCTIONS);
+  const auctionEvents = await getEvents(
+    startBlock,
+    endBlock,
+    GET_ALL_AUCTIONS_CREATED
+  );
   const events: AuctionCreated[] = [];
 
   for (const i in auctionEvents) {
@@ -242,17 +251,17 @@ export const fetchGovernorEvents = async (
 
   for (const i in governorEvents) {
     const daoName = await getDaos(
-    governorEvents[i].collectionAddress,
-    GET_DAO_INFO
+      governorEvents[i].collectionAddress,
+      GET_DAO_INFO
     );
     events.push({
-    eventType: "ProposalCreated",
-    blockNumber: governorEvents[i].transactionInfo.blockNumber,
-    collectionAddress: governorEvents[i].collectionAddress,
-    description: governorEvents[i].properties.properties.description,
-    proposalId: governorEvents[i].properties.properties.proposalId,
-    name: daoName[0].name,
-    symbol: daoName[0].symbol,
+      eventType: "ProposalCreated",
+      blockNumber: governorEvents[i].transactionInfo.blockNumber,
+      collectionAddress: governorEvents[i].collectionAddress,
+      description: governorEvents[i].properties.properties.description,
+      proposalId: governorEvents[i].properties.properties.proposalId,
+      name: daoName[0].name,
+      symbol: daoName[0].symbol,
     });
   }
 

@@ -2,7 +2,11 @@
 import { gql } from "graphql-request";
 
 export const GET_ALL_NEW_DAOS = gql`
-  query GetAllNewDaosDeployed($endBlock: Int, $startBlock: Int) {
+  query GetAllNewDaosDeployed(
+    $endBlock: Int
+    $startBlock: Int
+    $collectionAddresses: [String!]
+  ) {
     nouns {
       nounsEvents(
         filter: {
@@ -11,6 +15,7 @@ export const GET_ALL_NEW_DAOS = gql`
         }
         networks: { network: ETHEREUM, chain: MAINNET }
         sort: { sortKey: CREATED, sortDirection: ASC }
+        where: { collectionAddresses: $collectionAddresses }
       ) {
         nodes {
           collectionAddress
