@@ -1,4 +1,3 @@
-import request from "graphql-request";
 import { GET_ALL_NEW_DAOS } from "../graphql/managerQueries";
 import { DaoDeployed } from "../interfaces/managerInterfaces";
 import {
