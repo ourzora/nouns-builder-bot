@@ -92,8 +92,8 @@ export const fetchEvents = async (
   );
 
   const sortedAuctionEndedEvents = [
-    ...auctionCreatedEvents,
     ...auctionSettledEvents,
+    ...auctionCreatedEvents,
   ].sort((a, b) => a.logIndex - b.logIndex);
 
   const events: DaoEvents[] = [
