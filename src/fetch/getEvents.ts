@@ -17,7 +17,7 @@ export const getEvents = async (
         endBlock: endBlock,
         startBlock: startBlock,
         collectionAddresses:
-          process.env.DAO_TOKEN_ADDRESS !== ""
+          process.env.DAO_TOKEN_ADDRESS !== "all"
             ? [process.env.DAO_TOKEN_ADDRESS]
             : [],
       },

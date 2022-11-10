@@ -3,7 +3,7 @@
 
 This repo contains all of the code needed to spin up a Twitter bot that tracks Nouns Builder events. Right now if you were to run the code as is your twitter bot
 would tweet about events that are happening across all Nouns Builder DAOs. To change this and instead only tweet about events from a specific DAO you want to track
-you will need to change the env variable `DAO_TOKEN_ADDRESS` from `""` to the DAO's token address.
+you will need to change the env variable `DAO_TOKEN_ADDRESS` from `"all"` to the DAO's token address.
 
 
 ## Step 1 ~ Setting up your bot
@@ -22,7 +22,7 @@ These are the .env variables you will need:
 - `TWITTER_ACCESS_TOKEN`
 - `TWITTER_ACCESS_TOKEN_SECRET`
 - `RPC_URL` (you can get this from https://www.alchemy.com/)
-- `DAO_TOKEN_ADDRESS` (keep as "" if you want to track all DAOs or change to a specfic DAO token address that you want to track)
+- `DAO_TOKEN_ADDRESS` (keep as "all" if you want to track all DAOs or change to a specfic DAO token address that you want to track)
 - `REDIS_URL` (ignore until you get to the deploying step)
 
 
