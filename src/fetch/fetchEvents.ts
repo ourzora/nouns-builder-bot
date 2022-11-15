@@ -154,7 +154,11 @@ export const fetchAuctionSettledEvents = async (
   const events: AuctionSettled[] = [];
 
   for (const i in auctionEvents) {
-    if (auctionEvents[i].properties.properties.tokenId != null) {
+    if (
+      auctionEvents[i].properties.properties.tokenId != null &&
+      auctionEvents[i].properties.properties.winner !==
+        "0x0000000000000000000000000000000000000000"
+    ) {
       const daoName = await getDaos(
         auctionEvents[i].collectionAddress,
         GET_DAO_INFO
