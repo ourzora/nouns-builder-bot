@@ -57,3 +57,31 @@ export const getDaos = async (
     return undefined;
   }
 };
+
+export const getTokenImage = async (
+  collectionAddress: string,
+  tokenId: string,
+  query: string,
+): Promise<any> => {
+  if (collectionAddress == null || tokenId == null) {
+    return;
+  }
+
+  try {
+    const events = await request(
+      "https://api.zora.co/graphql",
+      query,
+      {
+        collectionAddress: collectionAddress,
+        tokenId: tokenId,
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    return events.token.token.image.mediaEncoding.poster;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}

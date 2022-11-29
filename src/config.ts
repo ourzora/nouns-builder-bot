@@ -1,5 +1,10 @@
 import { ethers } from "ethers";
 import { TwitterClient } from "twitter-api-client";
+import { Client, Intents } from "discord.js";
+
+export const discordBot = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+});
 
 export const twitterClient = new TwitterClient({
   apiKey: process.env.TWITTER_API_KEY,

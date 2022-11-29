@@ -14,7 +14,8 @@ import { GET_ALL_PROPOSALS_CREATED } from "../graphql/governorQueries";
 import { Proposal } from "../interfaces/governorInterfaces";
 import { DaoEvents } from "../types/types";
 import { GET_DAO_INFO } from "../graphql/daoQueries";
-import { getDaos, getEvents } from "./getEvents";
+import { GET_TOKEN_IMAGE } from "../graphql/tokenQueries";
+import { getDaos, getEvents, getTokenImage } from "./getEvents";
 
 export const fetchEvents = async (
   startBlock: number,
@@ -101,6 +102,11 @@ export const fetchAuctionCreatedEvents = async (
         tokenId: auctionEvents[i].properties.properties.tokenId,
         name: daoName[0].name,
         symbol: daoName[0].symbol,
+        tokenImage: await getTokenImage(
+          auctionEvents[i].collectionAddress,
+          auctionEvents[i].properties.properties.tokenId,
+          GET_TOKEN_IMAGE
+        ),
       });
     }
   }
@@ -134,6 +140,11 @@ export const fetchAuctionBidEvents = async (
           auctionEvents[i].properties.properties.amountPrice.chainTokenPrice
             .decimal,
         bidder: auctionEvents[i].properties.properties.bidder,
+        tokenImage: await getTokenImage(
+          auctionEvents[i].collectionAddress,
+          auctionEvents[i].properties.properties.tokenId,
+          GET_TOKEN_IMAGE
+        ),
       });
     }
   }
@@ -176,6 +187,11 @@ export const fetchAuctionSettledEvents = async (
           auctionEvents[i].properties.properties.amountPrice.chainTokenPrice
             .decimal,
         winner: auctionEvents[i].properties.properties.winner,
+        tokenImage: await getTokenImage(
+          auctionEvents[i].collectionAddress,
+          auctionEvents[i].properties.properties.tokenId,
+          GET_TOKEN_IMAGE
+        ),
       });
     }
   }
