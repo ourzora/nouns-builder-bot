@@ -1,41 +1,41 @@
-import { rpcProvider } from "./config";
 import {
   AuctionBid,
   AuctionCreated,
   AuctionSettled,
-} from "./interfaces/auctionInterfaces";
-import { Proposal } from "./interfaces/governorInterfaces";
-import { DaoDeployed } from "./interfaces/managerInterfaces";
-import { DaoEvents } from "./types/types";
+} from "../interfaces/auctionInterfaces";
+import { Proposal } from "../interfaces/governorInterfaces";
+import { DaoDeployed } from "../interfaces/managerInterfaces";
+import { DaoEvents } from "../types/types";
+import { checkIfEnsExists } from "./utils";
 
-export const messages = (event: DaoEvents) => {
+export const twitterMessages = (event: DaoEvents) => {
   switch (event.eventType) {
     case "AuctionCreated":
-      return createMessageAuctionCreated(event);
+      return createMessageAuctionCreatedTwitter(event);
     case "AuctionBid":
-      return createMessageAuctionBid(event);
+      return createMessageAuctionBidTwitter(event);
     case "AuctionSettled":
-      return createMessageAuctionSettled(event);
+      return createMessageAuctionSettledTwitter(event);
     case "ProposalCreated":
-      return createMessageProposalCreated(event);
+      return createMessageProposalCreatedTwitter(event);
     case "DaoDeployed":
-      return createMessageDaoDeployed(event);
+      return createMessageDaoDeployedTwitter(event);
   }
 };
 
-export const createMessageDaoDeployed = async (dao: DaoDeployed) => {
+export const createMessageDaoDeployedTwitter = async (dao: DaoDeployed) => {
   return `🛠 New DAO created: ${dao.name} ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
 };
 
-export const createMessageAuctionCreated = async (auction: AuctionCreated) => {
+export const createMessageAuctionCreatedTwitter = async (auction: AuctionCreated) => {
   return `✨ New auction created for ${auction.name} ($${auction.symbol}) token ${auction.tokenId} https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
 };
 
-export const createMessageProposalCreated = async (proposal: Proposal) => {
+export const createMessageProposalCreatedTwitter = async (proposal: Proposal) => {
   return `📬 New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/vote/${proposal.proposalId}`;
 };
 
-export const createMessageAuctionSettled = async (auction: AuctionSettled) => {
+export const createMessageAuctionSettledTwitter = async (auction: AuctionSettled) => {
   return `💖 Auction for ${auction.name} ($${auction.symbol}) token ${
     auction.tokenId
   } won by ${await checkIfEnsExists(auction.winner)} for ${
@@ -45,7 +45,7 @@ export const createMessageAuctionSettled = async (auction: AuctionSettled) => {
   }`;
 };
 
-export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
+export const createMessageAuctionBidTwitter = async (auctionBid: AuctionBid) => {
   return `💸 New bid of ${auctionBid.amountPrice} ETH placed for ${
     auctionBid.name
   } ($${auctionBid.symbol}) token ${
@@ -55,17 +55,3 @@ export const createMessageAuctionBid = async (auctionBid: AuctionBid) => {
   }/${auctionBid.tokenId}`;
 };
 
-const checkIfEnsExists = async (address: string) => {
-  try {
-    const ensAddress = await rpcProvider.lookupAddress(address);
-
-    if (ensAddress) {
-      return ensAddress;
-    }
-
-    return address;
-  } catch (error) {
-    console.log(error);
-    return address;
-  }
-};

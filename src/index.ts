@@ -1,8 +1,16 @@
 import "dotenv/config";
 import { schedule } from "node-cron";
-import { redis, redisClient, rpcProvider, twitterClient } from "./config";
+import {
+  discordBot,
+  redis,
+  redisClient,
+  rpcProvider,
+  twitterClient,
+} from "./config";
 import { fetchEvents } from "./fetch/fetchEvents";
-import { messages } from "./twitter";
+import { discordMessages } from "./messages/discord";
+import { twitterMessages } from "./messages/twitter";
+import { TextChannel } from "discord.js";
 
 const tick = async () => {
   try {
@@ -23,12 +31,14 @@ const tick = async () => {
 
     const events = await fetchEvents(startBlock, endBlock);
     for (const i in events) {
-      const message = await messages(events[i]);
       twitterClient.tweetsV2
         .createTweet({
-          text: message,
+          text: await twitterMessages(events[i]),
         })
         .catch((err) => console.log(err));
+      (
+        discordBot.channels.cache.get(process.env.APPLICATION_ID) as TextChannel
+      ).send({ embeds: [await discordMessages(events[i])] });
     }
 
     redisClient.set("block", endBlock + 1, redis.print);
@@ -42,6 +52,14 @@ redisClient.connect();
 redisClient.on("error", function (error) {
   console.error(error);
   process.exit(1);
+});
+
+// connect discord bot
+discordBot.login(process.env.DISCORD_BOT_TOKEN).then(() => {
+  console.log("logged in!");
+});
+discordBot.on("ready", () => {
+  console.log("bot is ready");
 });
 
 console.log("schedule tick");

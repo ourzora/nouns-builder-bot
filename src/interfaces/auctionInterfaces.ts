@@ -6,6 +6,7 @@ export interface AuctionCreated {
   tokenId: number;
   name: string;
   symbol: string;
+  tokenImage: string;
 }
 
 export interface AuctionBid {
@@ -17,6 +18,7 @@ export interface AuctionBid {
   symbol: string;
   amountPrice: number;
   bidder: string;
+  tokenImage: string;
 }
 
 export interface AuctionSettled {
@@ -29,5 +31,6 @@ export interface AuctionSettled {
   symbol: string;
   amountPrice: number;
   winner: string;
+  tokenImage: string;
 }
 
