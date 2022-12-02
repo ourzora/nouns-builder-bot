@@ -1,6 +1,6 @@
 # Nouns Builder Bot
 
-This repo contains all of the code needed to spin up a Twitter bot that tracks Nouns Builder events. Right now if you were to run the code as is your twitter bot
+This repo contains all of the code needed to spin up a Twitter/Discord bot that tracks Nouns Builder events. Right now if you were to run the code as is your bot
 would tweet about events that are happening across all Nouns Builder DAOs. To change this and instead only tweet about events from a specific DAO you want to track
 you will need to change the env variable `DAO_TOKEN_ADDRESS` from `"all"` to the DAO's token address.
 
@@ -59,10 +59,9 @@ There are many different services that you can use to deploy but we will focus o
 
 ### Discord Environment variables
 
-| ----------- | ----------- |
-| DISCORD_BOT_TOKEN | This is your bot's token |
-| APPLICATION_ID | This is the channel id you want your bot to post messages in |
-| GUILD_ID | This is the server id that you want your bot to post messages in |
+- `DISCORD_BOT_TOKEN` this is your bot's token
+- `APPLICATION_ID` this is the channel id you want your bot to post messages in 
+- `GUILD_ID` this is the server id that you want your bot to post messages in
 
 ## Running locally
 
