@@ -36,9 +36,9 @@ const tick = async () => {
           text: await twitterMessages(events[i]),
         })
         .catch((err) => console.log(err));
-      (
-        discordBot.channels.cache.get(process.env.APPLICATION_ID) as TextChannel
-      ).send({ embeds: [await discordMessages(events[i])] });
+      // (
+      //   discordBot.channels.cache.get(process.env.APPLICATION_ID) as TextChannel
+      // ).send({ embeds: [await discordMessages(events[i])] });
     }
 
     redisClient.set("block", endBlock + 1, redis.print);
