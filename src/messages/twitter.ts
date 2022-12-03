@@ -18,14 +18,14 @@ export const twitterMessages = (event: DaoEvents) => {
       return createMessageAuctionSettledTwitter(event);
     case "ProposalCreated":
       return createMessageProposalCreatedTwitter(event);
-    case "DaoDeployed":
-      return createMessageDaoDeployedTwitter(event);
+    // case "DaoDeployed":
+    //   return createMessageDaoDeployedTwitter(event);
   }
 };
 
-export const createMessageDaoDeployedTwitter = async (dao: DaoDeployed) => {
-  return `🛠 New DAO created: ${dao.name} ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
-};
+// export const createMessageDaoDeployedTwitter = async (dao: DaoDeployed) => {
+//   return `🛠 New DAO created: ${dao.name} ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
+// };
 
 export const createMessageAuctionCreatedTwitter = async (auction: AuctionCreated) => {
   return `✨ New auction created for ${auction.name} ($${auction.symbol}) token ${auction.tokenId} https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
