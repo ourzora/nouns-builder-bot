@@ -2,41 +2,47 @@ import {
   AuctionBid,
   AuctionCreated,
   AuctionSettled,
-} from "../interfaces/auctionInterfaces";
-import { Proposal } from "../interfaces/governorInterfaces";
-import { DaoDeployed } from "../interfaces/managerInterfaces";
-import { DaoEvents } from "../types/types";
-import { checkIfEnsExists } from "./utils";
+} from '../interfaces/auctionInterfaces';
+import { Proposal } from '../interfaces/governorInterfaces';
+import { DaoDeployed } from '../interfaces/managerInterfaces';
+import { DaoEvents } from '../types/types';
+import { checkIfEnsExists } from './utils';
 
 export const twitterMessages = (event: DaoEvents) => {
   switch (event.eventType) {
-    case "AuctionCreated":
+    case 'AuctionCreated':
       return createMessageAuctionCreatedTwitter(event);
-    case "AuctionBid":
+    case 'AuctionBid':
       return createMessageAuctionBidTwitter(event);
-    case "AuctionSettled":
+    case 'AuctionSettled':
       return createMessageAuctionSettledTwitter(event);
-    case "ProposalCreated":
+    case 'ProposalCreated':
       return createMessageProposalCreatedTwitter(event);
-    case "DaoDeployed":
-      return createMessageDaoDeployedTwitter(event);
+    // case "DaoDeployed":
+    //   return createMessageDaoDeployedTwitter(event);
   }
 };
 
-export const createMessageDaoDeployedTwitter = async (dao: DaoDeployed) => {
-  return `🛠 New DAO created: ${dao.name} ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
+// export const createMessageDaoDeployedTwitter = async (dao: DaoDeployed) => {
+//   return `🛠 New DAO created: ${dao.name} ($${dao.symbol}) https://nouns.build/dao/${dao.collectionAddress}`;
+// };
+
+export const createMessageAuctionCreatedTwitter = async (
+  auction: AuctionCreated
+) => {
+  return `✣ New auction created for ${auction.name} ($${auction.symbol}) token ${auction.tokenId} https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
 };
 
-export const createMessageAuctionCreatedTwitter = async (auction: AuctionCreated) => {
-  return `✨ New auction created for ${auction.name} ($${auction.symbol}) token ${auction.tokenId} https://nouns.build/dao/${auction.collectionAddress}/${auction.tokenId}`;
+export const createMessageProposalCreatedTwitter = async (
+  proposal: Proposal
+) => {
+  return `✶ New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/vote/${proposal.proposalId}`;
 };
 
-export const createMessageProposalCreatedTwitter = async (proposal: Proposal) => {
-  return `📬 New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/vote/${proposal.proposalId}`;
-};
-
-export const createMessageAuctionSettledTwitter = async (auction: AuctionSettled) => {
-  return `💖 Auction for ${auction.name} ($${auction.symbol}) token ${
+export const createMessageAuctionSettledTwitter = async (
+  auction: AuctionSettled
+) => {
+  return `✮ Auction for ${auction.name} ($${auction.symbol}) token ${
     auction.tokenId
   } won by ${await checkIfEnsExists(auction.winner)} for ${
     auction.amountPrice
@@ -45,8 +51,10 @@ export const createMessageAuctionSettledTwitter = async (auction: AuctionSettled
   }`;
 };
 
-export const createMessageAuctionBidTwitter = async (auctionBid: AuctionBid) => {
-  return `💸 New bid of ${auctionBid.amountPrice} ETH placed for ${
+export const createMessageAuctionBidTwitter = async (
+  auctionBid: AuctionBid
+) => {
+  return `✧ New bid of ${auctionBid.amountPrice} ETH placed for ${
     auctionBid.name
   } ($${auctionBid.symbol}) token ${
     auctionBid.tokenId
@@ -54,4 +62,3 @@ export const createMessageAuctionBidTwitter = async (auctionBid: AuctionBid) => 
     auctionBid.collectionAddress
   }/${auctionBid.tokenId}`;
 };
-
