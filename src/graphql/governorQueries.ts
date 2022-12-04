@@ -29,6 +29,7 @@ export const GET_ALL_PROPOSALS_CREATED = gql`
                   __typename
                   description
                   proposalId
+                  proposer
                 }
               }
             }
