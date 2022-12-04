@@ -36,7 +36,11 @@ export const createMessageAuctionCreatedTwitter = async (
 export const createMessageProposalCreatedTwitter = async (
   proposal: Proposal
 ) => {
-  return `✶ New proposal created for ${proposal.name} ($${proposal.symbol}) https://nouns.build/dao/${proposal.collectionAddress}/vote/${proposal.proposalId}`;
+  return `✶ New proposal created by ${await checkIfEnsExists(
+    proposal.proposer
+  )} https://nouns.build/dao/${proposal.collectionAddress}/vote/${
+    proposal.proposalId
+  }`;
 };
 
 export const createMessageAuctionSettledTwitter = async (
