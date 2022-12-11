@@ -222,6 +222,7 @@ export const fetchGovernorEvents = async (
       collectionAddress: governorEvents[i].collectionAddress,
       description: governorEvents[i].properties.properties.description,
       proposalId: governorEvents[i].properties.properties.proposalId,
+      proposer: governorEvents[i].properties.properties.proposer,
       name: daoName[0].name,
       symbol: daoName[0].symbol,
     });
