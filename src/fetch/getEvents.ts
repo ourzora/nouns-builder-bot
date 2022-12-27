@@ -79,7 +79,7 @@ export const getTokenImage = async (
         "Content-Type": "application/json",
       }
     );
-    return events.token.token.image.mediaEncoding.poster;
+    return events.token.token?.image?.mediaEncoding?.poster;
   } catch (error) {
     console.log(error);
     return undefined;
